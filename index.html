@@ -1,0 +1,336 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>LaidBack – Menu</title>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Playfair+Display:wght@400;600;700&display=swap" rel="stylesheet"/>
+  <link rel="stylesheet" href="css/main.css"/>
+  <link rel="icon" type="image/png" href="images/logo.PNG">
+</head>
+<body>
+
+<!-- ── NAVBAR ── -->
+<nav class="navbar">
+  <a href="index.html" class="nav-brand">
+    <img src="images/logo.PNG" alt="LaidBack Logo" class="nav-logo"/>
+    <span class="nav-name">LaidBack</span>
+  </a>
+
+  <ul class="nav-links">
+    <li><a type="button" id="about-link" class="nav-menu-link active">Tentang kami</a></li>
+    <li><a type="button" id="menu-link" class="menu-link nav-menu-link">Menu</a></li>
+    <li><a type="button" id="location-link" class="nav-menu-link">Lokasi</a></li>
+  </ul>
+
+  <div class="nav-links">
+    <div class="nav-actions">
+    <button class="cart-btn" onclick="window.location.href='cart.html'">
+      <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+        <path stroke-linecap="round" stroke-linejoin="round" d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z"/>
+      </svg>
+      Keranjang
+      <span class="cart-badge" id="cart-badge" style="display:none;">0</span>
+    </button>
+  </div>
+  <div class="nav-actions">
+    <button class="cart-btn" onclick="window.location.href='login.html'">
+      <img src="images/svg/logout.svg" alt="Logout" width="20" height="20"/>
+      Keluar
+      <span class="cart-badge" style="display:none;">0</span>
+    </button>
+  </div>
+  </div>
+</nav>
+
+<!-- ── HERO ── -->
+<section class="hero">
+  <img src="images/logo.PNG" alt="LaidBack" class="hero-logo"/>
+  <h1 class="hero-title">Breakfast – Lunch – Dinner</h1>
+  <p class="hero-desc">
+    LaidBack menghadirkan keaslian rasa dalam setiap hidangan, 
+    mulai dari racikan bumbu lokal yang kaya rempah 
+    hingga sajian modern yang tetap mempertahankan karakter khasnya.
+    <br/>
+    setiap menu disajikan dengan perhatian pada detail dan kualitas, 
+    menciptakan paduan rasa yang hangat, seimbang, dan berkesan.
+    <br/><br/>
+    
+    Lebih dari sekedar bersantap, ini adalah pengalaman menikmati citarasa yang jujur dan penuh cerita.
+  </p>
+
+  <div class="hero-info">
+    <div class="hero-info-item">
+      <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+        <path stroke-linecap="round" stroke-linejoin="round" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/>
+      </svg>
+      <span>Open daily 08.00 – 23.00</span>
+    </div>
+    <div class="hero-divider"></div>
+    <div class="hero-info-item">
+      <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+        <path stroke-linecap="round" stroke-linejoin="round" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"/>
+        <path stroke-linecap="round" stroke-linejoin="round" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"/>
+      </svg>
+      <span>Jl. S. Parman, Pelita, Engal, Bandar Lampung</span>
+    </div>
+  </div>
+</section>
+
+<!-- ── MENU SECTION ── -->
+<main id="menu-section" class="menu-section">
+  <!-- Filter Tabs -->
+  <div class="filter-tabs" id="filter-tabs">
+    <button class="filter-tab active" data-filter="Semua">Semua</button>
+    <button class="filter-tab" data-filter="Main Course">Main Course</button>
+    <button class="filter-tab" data-filter="Drinks Coffee">Drinks Coffee</button>
+    <button class="filter-tab" data-filter="Drinks Non Coffee">Drinks Non Coffee</button>
+  </div>
+
+  <!-- Menu Content -->
+  <div id="menu-content"></div>
+</main>
+
+<!-- ── LOKASI CONTENT ── -->
+<main id="lokasi-section" class="lokasi-container">
+  <div class="lokasi-grid">
+    <p class="hero-subtitle">Kunjungi restoran kami dan rasakan suasana yang hangat dan menyenangkan</p>
+    <h1 class="hero-title">Temukan Kami</h1>
+  </div>
+
+  <div class="lokasi-grid">
+    <!-- Photos Column -->
+    <div class="lokasi-photos">
+      <div class="lokasi-detail-item">
+        <div class="lokasi-icon">
+          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/>
+          </svg>
+        </div>
+        <div class="lokasi-detail-text">
+          <strong>Jam Buka</strong>
+          <span>Setiap Hari, 08.00 – 23.00 WIB</span>
+        </div>
+      </div>
+      <div class="lokasi-photo">
+        <img src="images/login-banner.png" alt="LaidBack Interior"/>
+      </div>
+      <div class="lokasi-photo">
+        <img src="images/vibes2.PNG" alt="LaidBack Vibes"/>
+      </div>
+    </div>
+
+    <!-- Info Column -->
+    <div class="lokasi-info">
+      <div class="lokasi-brand">
+        <img src="images/logo.PNG" alt="LaidBack Logo" class="lokasi-brand-logo"/>
+        <span class="nav-name">LaidBack</span>
+      </div>
+
+      <p class="lokasi-desc">
+        LaidBack bukan sekedar makan, tapi rasa yang bercerita hangat, jujur, dan selalu ingin diulang.
+        <br/><br/>
+      </p>
+
+      <div class="lokasi-detail">
+        <div class="lokasi-detail-item">
+          <div class="lokasi-icon">
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"/>
+              <path stroke-linecap="round" stroke-linejoin="round" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"/>
+            </svg>
+          </div>
+          <div class="lokasi-detail-text">
+            <strong>Alamat</strong>
+            <span>Jl. S. Parman, Pelita, Engal, Bandar Lampung</span>
+          </div>
+        </div>
+
+        <div class="lokasi-detail-item">
+          <div class="lokasi-icon">
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z"/>
+            </svg>
+          </div>
+          <div class="lokasi-detail-text">
+            <strong>Telepon</strong>
+            <span>+62 823 7777 7294</span>
+          </div>
+        </div>
+
+      <!-- Google Maps Embed -->
+      <div class="lokasi-map">
+        <iframe
+          src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3972.0043!2d105.2630!3d-5.3971!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x2e40daec4d57e907%3A0x4d3e7b10b98bc!2sJl.%20S.%20Parman%2C%20Pelita%2C%20Kec.%20Enggal%2C%20Kota%20Bandar%20Lampung%2C%20Lampung!5e0!3m2!1sid!2sid!4v1699999999999!5m2!1sid!2sid"
+          allowfullscreen=""
+          loading="lazy"
+          referrerpolicy="no-referrer-when-downgrade"
+          title="Lokasi LaidBack Restaurant">
+        </iframe>
+      </div>
+    </div>
+
+  </div>
+</main>
+
+
+<!-- Toast Container -->
+<div id="toast-container"></div>
+
+<script src="js/data.js"></script>
+<script src="js/cart.js"></script>
+<script>
+  const aboutLink = document.getElementById('about-link')
+  const menuLink = document.getElementById('menu-link')
+  const locationLink = document.getElementById('location-link')
+
+  aboutLink.addEventListener('click', () => {
+    aboutLink.classList.add('active');
+    menuLink.classList.remove('active');
+    locationLink.classList.remove('active');
+    window.scrollTo({
+      top: 0,
+      behavior: 'smooth'
+    });
+  });
+
+  menuLink.addEventListener('click', () => {
+    menuLink.classList.add('active');
+    aboutLink.classList.remove('active');
+    locationLink.classList.remove('active');
+    const element = document.getElementById('menu-section');
+    window.scrollTo({
+      top: element.offsetTop-70,
+      behavior: 'smooth'
+    });
+  });
+
+  locationLink.addEventListener('click', () => {
+    locationLink.classList.add('active');
+    menuLink.classList.remove('active');
+    aboutLink.classList.remove('active');
+    const element = document.getElementById('lokasi-section');
+    window.scrollTo({
+      top: element.offsetTop-70,
+      behavior: 'smooth'
+    });
+  });
+
+
+  /* ── Build card HTML ── */
+  function buildCard(item) {
+    return `
+      <div class="menu-card" data-id="${item.id}">
+        <div class="card-img-wrap">
+          <div class="card-img-inner">
+            <img src="${item.image}" alt="${item.name}" loading="lazy"/>
+          </div>
+          <span class="card-category-badge">${item.category}</span>
+        </div>
+        <div class="card-body">
+          <div class="card-name">${item.name}</div>
+          <div class="card-desc">${item.desc}</div>
+          <div class="card-footer">
+            <span class="card-price">${formatRp(item.price)}</span>
+            <button class="add-btn" data-id="${item.id}" title="Tambah ke keranjang">
+              <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M12 4v16m8-8H4"/>
+              </svg>
+            </button>
+          </div>
+        </div>
+      </div>
+    `;
+  }
+
+  /* ── Render menu ── */
+  function renderMenu(filter) {
+    const content = document.getElementById('menu-content');
+    content.innerHTML = '';
+
+    if (filter === 'Semua') {
+      CATEGORY_ORDER.forEach(cat => {
+        const items = getMenuByCategory(cat);
+        if (!items.length) return;
+
+        const block = document.createElement('div');
+        block.className = 'category-block';
+        block.innerHTML = `
+          <div class="category-header">
+            <h2 class="category-title">${cat}</h2>
+            <button class="see-all-btn" data-cat="${cat}">
+              Lihat semua
+              <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" width="14" height="14">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7"/>
+              </svg>
+            </button>
+          </div>
+          <div class="menu-grid">
+            ${items.map(buildCard).join('')}
+          </div>
+        `;
+        content.appendChild(block);
+      });
+
+      /* "lihat semua" switches filter */
+      content.querySelectorAll('.see-all-btn').forEach(btn => {
+        btn.addEventListener('click', () => {
+          const cat = btn.dataset.cat;
+          document.querySelectorAll('.filter-tab').forEach(t => {
+            t.classList.toggle('active', t.dataset.filter === cat);
+          });
+          renderMenu(cat);
+        });
+      });
+
+    } else {
+      const items = MENU_DATA.filter(i => i.category === filter);
+      const block = document.createElement('div');
+      block.className = 'category-block';
+      block.innerHTML = `
+        <div class="category-header">
+          <h2 class="category-title">${filter}</h2>
+        </div>
+        <div class="menu-grid">
+          ${items.map(buildCard).join('')}
+        </div>
+      `;
+      content.appendChild(block);
+    }
+
+    /* Card click → detail page */
+    content.querySelectorAll('.menu-card').forEach(card => {
+      card.addEventListener('click', e => {
+        if (e.target.closest('.add-btn')) return;
+        window.location.href = `menu-detail.html?id=${card.dataset.id}`;
+      });
+    });
+
+    /* Add-to-cart buttons */
+    content.querySelectorAll('.add-btn').forEach(btn => {
+      btn.addEventListener('click', e => {
+        e.stopPropagation();
+        const item = getMenuItemById(btn.dataset.id);
+        if (item) {
+          addToCart(item);
+          btn.classList.add('added');
+          setTimeout(() => btn.classList.remove('added'), 400);
+        }
+      });
+    });
+  }
+
+  /* ── Filter tab events ── */
+  document.getElementById('filter-tabs').addEventListener('click', e => {
+    const tab = e.target.closest('.filter-tab');
+    if (!tab) return;
+    document.querySelectorAll('.filter-tab').forEach(t => t.classList.remove('active'));
+    tab.classList.add('active');
+    renderMenu(tab.dataset.filter);
+  });
+
+  /* ── Init ── */
+  renderMenu('Semua');
+</script>
+</body>
+</html>

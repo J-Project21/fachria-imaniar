@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>LaidBack – Checkout</title>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Playfair+Display:wght@400;600;700&display=swap" rel="stylesheet"/>
+  <link rel="stylesheet" href="css/main.css"/>
+  <link rel="icon" type="image/png" href="images/logo.PNG">
+</head>
+<body>
+
+<!-- ── NAVBAR ── -->
+<nav class="navbar">
+  <a href="index.html" class="nav-brand">
+    <img src="images/logo.PNG" alt="LaidBack Logo" class="nav-logo"/>
+    <span class="nav-name">LaidBack</span>
+  </a>
+
+  <ul class="nav-links">
+    <li><a href="cart.html" class="nav-menu-link active">Kembali</a></li>
+  </ul>
+
+  <div class="nav-actions">
+    <button class="cart-btn" onclick="window.location.href='cart.html'">
+      <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+        <path stroke-linecap="round" stroke-linejoin="round" d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z"/>
+      </svg>
+      Keranjang
+      <span class="cart-badge" id="cart-badge" style="display:none;">0</span>
+    </button>
+  </div>
+</nav>
+
+<!-- ── PAGE HEADER ── -->
+<div class="page-header">
+  <h1 class="page-title">Checkout</h1>
+  <p class="page-subtitle">Tinjau Kembali Pesanan Makanan Anda</p>
+</div>
+
+<!-- ── CHECKOUT CONTENT ── -->
+<div class="checkout-container">
+  <div class="checkout-layout" id="checkout-layout">
+    <!-- Injected by JS -->
+  </div>
+</div>
+
+<div id="toast-container"></div>
+
+<script src="js/data.js"></script>
+<script src="js/cart.js"></script>
+<script>
+const TAX_RATE     = 0.10;
+const SERVICE_RATE = 0.05;
+
+/* Redirect if cart empty */
+document.addEventListener('DOMContentLoaded', () => {
+  if (!getCart().length) {
+    window.location.href = 'index.html';
+    return;
+  }
+  renderCheckout();
+});
+
+function renderCheckout() {
+  const cart     = getCart();
+  const subtotal = getSubtotal();
+  const deliv    = 25000; // Flat delivery fee
+  const tax      = Math.round(subtotal * TAX_RATE);
+  const service  = Math.round(subtotal * SERVICE_RATE);
+  const total    = subtotal + tax + service + deliv;
+
+  const itemRows = cart.map(item => `
+    <div class="co-item-row">
+      <span class="co-item-name">${item.name}</span>
+      <span class="co-item-qty">×${item.qty}</span>
+      <span class="co-item-price">${formatRp(item.price * item.qty)}</span>
+    </div>
+  `).join('');
+
+  document.getElementById('checkout-layout').innerHTML = `
+    <!-- Form Column -->
+    <div class="form-card">
+      <div class="form-section-title">Alamat Pengiriman</div>
+
+      <div class="form-group">
+        <label class="form-label" for="nama">Nama Lengkap</label>
+        <input class="form-input" type="text" id="nama" placeholder="Masukkan nama lengkap Anda" autocomplete="name"/>
+      </div>
+
+      <div class="form-group">
+        <label class="form-label" for="jalan">Nama Jalan</label>
+        <input class="form-input" type="text" id="jalan" placeholder="Contoh: Jl. Merdeka No. 10" autocomplete="street-address"/>
+      </div>
+
+      <div class="form-group">
+        <label class="form-label" for="kota">Kota</label>
+        <input class="form-input" type="text" id="kota" placeholder="Contoh: Bandar Lampung" autocomplete="address-level2"/>
+      </div>
+
+      <div class="form-group" style="margin-top:28px;">
+        <div class="form-section-title">Metode Pembayaran</div>
+        <div class="select-wrap">
+          <select class="form-select" id="payment">
+            <option value="" disabled selected>Pilih metode pembayaran</option>
+            <option value="bca">Bank Central Asia (BCA)</option>
+            <option value="mandiri">Mandiri</option>
+            <option value="bni">BNI</option>
+            <option value="bri">BRI</option>
+            <option value="gopay">GoPay</option>
+            <option value="ovo">OVO</option>
+          </select>
+        </div>
+      </div>
+    </div>
+
+    <!-- Summary Column -->
+    <div class="summary-card">
+      <div class="summary-title">Ringkasan Pesanan</div>
+
+      <div class="checkout-summary-items">
+        ${itemRows}
+      </div>
+
+      <div class="summary-divider"></div>
+
+      <div class="summary-row">
+        <span>Subtotal</span>
+        <span>${formatRp(subtotal)}</span>
+      </div>
+      <div class="summary-row">
+        <span>Pajak (10%)</span>
+        <span>${formatRp(tax)}</span>
+      </div>
+      <div class="summary-row">
+        <span>Biaya Layanan (5%)</span>
+        <span>${formatRp(service)}</span>
+      </div>
+      <div class="summary-row">
+        <span>Est. Biaya Pengiriman</span>
+        <span>${formatRp(deliv)}</span>
+      </div>
+      <div class="summary-row total">
+        <span>Total</span>
+        <span>${formatRp(total)}</span>
+      </div>
+
+      <button class="pay-btn" id="pay-btn">
+        <span class="btn-text">Bayar Sekarang</span>
+        <span class="btn-spinner"><span class="spinner-ring"></span></span>
+      </button>
+    </div>
+  `;
+
+  /* Pay button handler */
+  document.getElementById('pay-btn').addEventListener('click', handlePayment);
+}
+
+function handlePayment() {
+  const nama    = document.getElementById('nama');
+  const jalan   = document.getElementById('jalan');
+  const kota    = document.getElementById('kota');
+  const payment = document.getElementById('payment');
+  let valid     = true;
+
+  [nama, jalan, kota, payment].forEach(el => el.classList.remove('error'));
+
+  if (!nama.value.trim())    { nama.classList.add('error');    valid = false; }
+  if (!jalan.value.trim())   { jalan.classList.add('error');   valid = false; }
+  if (!kota.value.trim())    { kota.classList.add('error');    valid = false; }
+  if (!payment.value)        { payment.classList.add('error'); valid = false; }
+
+  if (!valid) {
+    showToast('Mohon lengkapi semua field terlebih dahulu.', 'error');
+    return;
+  }
+
+  const btn = document.getElementById('pay-btn');
+  btn.classList.add('loading');
+
+  setTimeout(() => {
+    clearCart();
+    window.location.href = 'checkout-complete.html';
+  }, 1800);
+}
+</script>
+</body>
+</html>

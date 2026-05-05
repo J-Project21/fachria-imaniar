@@ -1,0 +1,654 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Selamat Datang</title>
+  <link rel="icon" type="image/png" href="images/logo.PNG">
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet"/>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --bg: #f0efed;
+      --white: #ffffff;
+      --dark: #111111;
+      --accent: #b85c38;
+      --accent-hover: #a04e2e;
+      --gray-label: #444444;
+      --gray-sub: #666666;
+      --input-bg: #ebebeb;
+      --input-focus-bg: #e4e4e4;
+      --radius-card: 28px;
+      --radius-input: 12px;
+      --font: 'Plus Jakarta Sans', sans-serif;
+      --shadow-card: 0 8px 40px rgba(0,0,0,0.10);
+      --transition: 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+
+    html, body {
+      height: 100%;
+      background: var(--bg);
+      font-family: var(--font);
+      color: var(--dark);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 100vh;
+      overflow: hidden;
+    }
+
+    body::before {
+      content: '';
+      position: fixed;
+      inset: 0;
+      background:
+        radial-gradient(ellipse 60% 50% at 15% 50%, rgba(184,92,56,0.06) 0%, transparent 60%),
+        radial-gradient(ellipse 40% 60% at 80% 20%, rgba(0,0,0,0.03) 0%, transparent 60%);
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    /* ── WRAPPER clips the sliding track ── */
+    .page-wrapper {
+      position: relative;
+      z-index: 1;
+      width: 100%;
+      max-width: 1100px;
+      overflow: hidden;
+    }
+
+    /* ── TRACK holds two screens side by side ── */
+    .slide-track {
+      display: flex;
+      width: 200%;
+      transition: transform 0.58s cubic-bezier(0.77, 0, 0.175, 1);
+    }
+    .slide-track.show-register { transform: translateX(-50%); }
+
+    /* ── EACH SCREEN is half the track = full wrapper width ── */
+    .screen {
+      width: 50%;
+      display: flex;
+      align-items: center;
+      padding: 40px;
+      min-height: 600px;
+    }
+
+    @keyframes fadeInUp {
+      from { opacity: 0; transform: translateY(28px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+
+    /* ── IMAGE CARD ── */
+    .image-card {
+      position: relative;
+      width: 48%;
+      max-width: 510px;
+      aspect-ratio: 3/4;
+      max-height: 640px;
+      border-radius: var(--radius-card);
+      overflow: hidden;
+      box-shadow: var(--shadow-card);
+      flex-shrink: 0;
+      cursor: pointer;
+      animation: fadeInUp 0.7s 0.1s cubic-bezier(0.4,0,0.2,1) both;
+    }
+
+    .image-card::after {
+      content: '';
+      position: absolute; inset: 0;
+      background: linear-gradient(to top, rgba(0,0,0,0.18) 0%, transparent 40%);
+      pointer-events: none;
+    }
+
+    .img-placeholder {
+      width: 100%; height: 100%;
+      background: linear-gradient(135deg, #d4cfc8 0%, #c5bfb5 40%, #b5b0a8 100%);
+      display: flex; align-items: center; justify-content: center;
+      position: relative; overflow: hidden;
+      transition: transform 0.7s cubic-bezier(0.4,0,0.2,1);
+    }
+    .image-card:hover .img-placeholder { transform: scale(1.035); }
+
+    /* ── FORM PANEL ── */
+    .form-panel {
+      flex: 1;
+      padding: 20px 50px 20px 68px;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+    }
+
+    .form-title {
+      font-size: clamp(1.9rem, 3.2vw, 2.7rem);
+      font-weight: 800;
+      letter-spacing: -0.03em;
+      line-height: 1.1;
+      color: var(--dark);
+      margin-bottom: 13px;
+    }
+
+    .form-subtitle {
+      font-size: 0.87rem;
+      color: var(--gray-sub);
+      line-height: 1.72;
+      font-weight: 400;
+      margin-bottom: 28px;
+      max-width: 480px;
+    }
+
+    .section-label {
+      font-size: 1.05rem;
+      font-weight: 700;
+      color: var(--dark);
+      margin-bottom: 16px;
+      letter-spacing: -0.01em;
+    }
+
+    /* ── INPUT GROUP ── */
+    .input-group {
+      margin-bottom: 16px;
+      position: relative;
+    }
+
+    .input-label-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 9px;
+    }
+
+    .input-label {
+      font-size: 0.875rem;
+      font-weight: 600;
+      color: var(--gray-label);
+      letter-spacing: 0.01em;
+    }
+
+    .forgot-link {
+      font-size: 0.8rem; font-weight: 600;
+      color: var(--accent); text-decoration: none;
+      position: relative; transition: color var(--transition);
+    }
+    .forgot-link::after {
+      content: ''; position: absolute;
+      bottom: -1px; left: 0; width: 0; height: 1.5px;
+      background: var(--accent); transition: width var(--transition);
+    }
+    .forgot-link:hover { color: var(--accent-hover); }
+    .forgot-link:hover::after { width: 100%; }
+
+    .input-wrapper { position: relative; }
+
+    .input-field {
+      width: 100%;
+      padding: 15px 18px;
+      background: var(--input-bg);
+      border: 2px solid transparent;
+      border-radius: var(--radius-input);
+      font-family: var(--font);
+      font-size: 0.92rem; font-weight: 500;
+      color: var(--dark); outline: none;
+      transition: border-color var(--transition), background var(--transition),
+                  box-shadow var(--transition), transform var(--transition);
+    }
+    .input-field::placeholder { color: #aaaaaa; font-weight: 400; }
+    .input-field:hover { background: var(--input-focus-bg); }
+    .input-field:focus {
+      background: var(--white); border-color: var(--dark);
+      box-shadow: 0 0 0 4px rgba(17,17,17,0.07); transform: translateY(-1px);
+    }
+    .input-field.has-value { background: var(--white); border-color: rgba(17,17,17,0.15); }
+    .input-field.error { border-color: #c0392b !important; background: #fff5f5 !important; box-shadow: 0 0 0 4px rgba(192,57,43,0.08) !important; }
+    .input-field.ok    { border-color: #27ae60 !important; }
+
+    /* two password fields side by side */
+    .input-row {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 14px;
+    }
+    .input-row .input-group { margin-bottom: 0; }
+
+    .eye-btn {
+      position: absolute; right: 13px; top: 50%;
+      transform: translateY(-50%);
+      background: none; border: none;
+      cursor: pointer; color: #aaa; padding: 4px;
+      display: flex; align-items: center;
+      transition: color var(--transition);
+    }
+    .eye-btn:hover { color: var(--dark); }
+    .pw-eye { padding-right: 42px; }
+
+    .field-hint {
+      font-size: 0.73rem; font-weight: 500;
+      margin-top: 5px; min-height: 16px;
+      opacity: 0; transform: translateY(-4px);
+      transition: opacity 0.2s, transform 0.2s, color 0.2s;
+      pointer-events: none;
+    }
+    .field-hint.show-error { opacity: 1; transform: translateY(0); color: #c0392b; }
+    .field-hint.show-ok    { opacity: 1; transform: translateY(0); color: #27ae60; }
+
+    /* ── BUTTON ── */
+    .btn-submit {
+      width: 100%; padding: 16px 20px;
+      background: var(--dark); color: var(--white);
+      border: none; border-radius: var(--radius-input);
+      font-family: var(--font); font-size: 0.95rem; font-weight: 700;
+      letter-spacing: 0.02em; cursor: pointer;
+      position: relative; overflow: hidden;
+      transition: transform var(--transition), box-shadow var(--transition), background var(--transition);
+    }
+    .btn-submit::before {
+      content: ''; position: absolute; inset: 0;
+      background: rgba(255,255,255,0.08); opacity: 0;
+      transition: opacity var(--transition);
+    }
+    .btn-submit:hover { transform: translateY(-2px); box-shadow: 0 10px 30px rgba(0,0,0,0.22); }
+    .btn-submit:hover::before { opacity: 1; }
+    .btn-submit:active { transform: translateY(0); box-shadow: 0 4px 12px rgba(0,0,0,0.15); }
+
+    .btn-submit .ripple {
+      position: absolute; border-radius: 50%;
+      background: rgba(255,255,255,0.25); transform: scale(0);
+      animation: ripple 0.55s linear; pointer-events: none;
+    }
+    @keyframes ripple { to { transform: scale(4); opacity: 0; } }
+
+    .btn-submit.loading { pointer-events: none; background: #333; }
+    .btn-submit .btn-text { transition: opacity 0.2s; }
+    .btn-submit .btn-spinner {
+      position: absolute; inset: 0; display: flex;
+      align-items: center; justify-content: center;
+      opacity: 0; transition: opacity 0.2s;
+    }
+    .btn-submit.loading .btn-text   { opacity: 0; }
+    .btn-submit.loading .btn-spinner{ opacity: 1; }
+    .spinner-ring {
+      width: 22px; height: 22px;
+      border: 2.5px solid rgba(255,255,255,0.3);
+      border-top-color: #fff; border-radius: 50%;
+      animation: spin 0.7s linear infinite;
+    }
+    @keyframes spin { to { transform: rotate(360deg); } }
+
+    /* ── FOOTER ── */
+    .form-footer {
+      font-size: 0.865rem; color: var(--gray-sub); font-weight: 400; margin-top: 18px;
+    }
+    .form-footer.center { text-align: center; }
+    .form-footer.right  { text-align: right; }
+
+    .accent-link {
+      color: var(--accent); font-weight: 700; text-decoration: none;
+      position: relative; transition: color var(--transition);
+      background: none; border: none; font-family: var(--font);
+      font-size: inherit; cursor: pointer; padding: 0;
+    }
+    .accent-link::after {
+      content: ''; position: absolute; bottom: -1px; left: 0;
+      width: 0; height: 1.5px; background: var(--accent);
+      transition: width var(--transition);
+    }
+    .accent-link:hover { color: var(--accent-hover); }
+    .accent-link:hover::after { width: 100%; }
+
+    /* ── SUCCESS OVERLAY ── */
+    .success-overlay {
+      position: fixed; inset: 0;
+      background: rgba(255,255,255,0.92); backdrop-filter: blur(12px);
+      display: flex; flex-direction: column; align-items: center; justify-content: center;
+      z-index: 100; opacity: 0; pointer-events: none; transition: opacity 0.4s ease;
+    }
+    .success-overlay.show { opacity: 1; pointer-events: all; }
+
+    .success-icon {
+      width: 80px; height: 80px; background: var(--dark); border-radius: 50%;
+      display: flex; align-items: center; justify-content: center; margin-bottom: 24px;
+      animation: popIn 0.5s 0.1s cubic-bezier(0.175, 0.885, 0.32, 1.275) both;
+    }
+    @keyframes popIn {
+      from { transform: scale(0.5); opacity: 0; }
+      to   { transform: scale(1);   opacity: 1; }
+    }
+    .success-icon svg { width: 36px; height: 36px; color: white; }
+    .success-title { font-size: 1.6rem; font-weight: 800; margin-bottom: 8px; animation: fadeInUp 0.4s 0.3s both; }
+    .success-sub   { font-size: 0.9rem; color: var(--gray-sub); animation: fadeInUp 0.4s 0.4s both; }
+
+    /* ── RESPONSIVE ── */
+    @media (max-width: 860px) {
+      html, body { overflow-y: auto; align-items: flex-start; }
+      .page-wrapper { overflow: hidden; }
+      .screen { flex-direction: column; padding: 28px 24px 40px; min-height: unset; gap: 28px; }
+      .image-card { width: 100%; max-width: 100%; aspect-ratio: 16/9; max-height: 240px; }
+      .form-panel { padding: 0; }
+      .input-row { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+
+<div class="page-wrapper">
+  <div class="slide-track" id="slide-track">
+
+    <!-- ══════ LOGIN ══════ -->
+    <div class="screen">
+
+      <div class="image-card">
+        <div class="img-placeholder">
+          <img src="images/login-banner.png" alt="Food Image" style="width:100%;height:100%;object-fit:cover;"/>
+        </div>
+      </div>
+
+      <div class="form-panel">
+        <h1 class="form-title">Selamat Datang</h1>
+        <p class="form-subtitle">
+          Masuk Untuk Melanjutkan Pengalaman Bersantapmu<br>
+          Reservasi Meja, Jelajahi Menu Favorit,<br>
+          Dan Nikmati Kemudahan Dalam Satu Sentuhan
+        </p>
+
+        <div class="input-group">
+          <div class="input-label-row">
+            <label class="input-label" for="l-email">Akun Email</label>
+          </div>
+          <div class="input-wrapper">
+            <input id="l-email" type="email" class="input-field" placeholder="Fachria@Gmail.Com" autocomplete="email"/>
+          </div>
+          <div class="field-hint" id="l-email-hint"></div>
+        </div>
+
+        <div class="input-group">
+          <div class="input-label-row">
+            <label class="input-label" for="l-pass">Sandi</label>
+            <a href="#" class="forgot-link" onclick="return false;">Lupa Sandi?</a>
+          </div>
+          <div class="input-wrapper">
+            <input id="l-pass" type="password" class="input-field pw-eye" placeholder="Masukan Password Anda" autocomplete="current-password"/>
+            <button class="eye-btn" id="l-eye" type="button" aria-label="toggle">
+              <svg id="l-eye-icon" xmlns="http://www.w3.org/2000/svg" width="19" height="19" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/>
+                <path stroke-linecap="round" stroke-linejoin="round" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"/>
+              </svg>
+            </button>
+          </div>
+          <div class="field-hint" id="l-pass-hint"></div>
+        </div>
+
+        <button class="btn-submit" id="l-submit" type="button">
+          <span class="btn-text">Masuk Akun</span>
+          <span class="btn-spinner"><span class="spinner-ring"></span></span>
+        </button>
+
+        <p class="form-footer center">
+          Belum Ada Akun? <button class="accent-link" id="go-register" type="button">Buat Akun</button>
+        </p>
+      </div>
+    </div>
+
+    <!-- ══════ REGISTER ══════ -->
+    <div class="screen">
+
+      <div class="image-card">
+        <div class="img-placeholder">
+          <img src="images/login-banner.png" alt="Food Image" style="width:100%;height:100%;object-fit:cover;"/>
+        </div>
+      </div>
+
+      <div class="form-panel">
+        <h1 class="form-title">Selamat Datang</h1>
+        <p class="form-subtitle">
+          Masuk Untuk Melanjutkan Pengalaman Bersantapmu<br>
+          Reservasi Meja, Jelajahi Menu Favorit,<br>
+          Dan Nikmati Kemudahan Dalam Satu Sentuhan
+        </p>
+
+        <div class="section-label">Buat Akun</div>
+
+        <div class="input-group">
+          <div class="input-label-row">
+            <label class="input-label" for="r-name">Nama Lengkap</label>
+          </div>
+          <div class="input-wrapper">
+            <input id="r-name" type="text" class="input-field" placeholder="Fachria Imaniar" autocomplete="name"/>
+          </div>
+          <div class="field-hint" id="r-name-hint"></div>
+        </div>
+
+        <div class="input-group">
+          <div class="input-label-row">
+            <label class="input-label" for="r-email">Akun Email</label>
+          </div>
+          <div class="input-wrapper">
+            <input id="r-email" type="email" class="input-field" placeholder="Fachria@Gmail.Com" autocomplete="email"/>
+          </div>
+          <div class="field-hint" id="r-email-hint"></div>
+        </div>
+
+        <!-- Sandi + Konfirmasi -->
+        <div class="input-row">
+          <div class="input-group">
+            <div class="input-label-row">
+              <label class="input-label" for="r-pass">Sandi</label>
+            </div>
+            <div class="input-wrapper">
+              <input id="r-pass" type="password" class="input-field pw-eye" placeholder="Masukan Sandi" autocomplete="new-password"/>
+              <button class="eye-btn" id="r-eye1" type="button" aria-label="toggle sandi">
+                <svg id="r-eye-icon1" xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                  <path stroke-linecap="round" stroke-linejoin="round" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/>
+                  <path stroke-linecap="round" stroke-linejoin="round" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"/>
+                </svg>
+              </button>
+            </div>
+            <div class="field-hint" id="r-pass-hint"></div>
+          </div>
+
+          <div class="input-group">
+            <div class="input-label-row">
+              <label class="input-label" for="r-confirm" style="color:var(--accent);font-weight:700;">Konfirmasi</label>
+            </div>
+            <div class="input-wrapper">
+              <input id="r-confirm" type="password" class="input-field pw-eye" placeholder="Masukan Sandi" autocomplete="new-password"/>
+              <button class="eye-btn" id="r-eye2" type="button" aria-label="toggle konfirmasi">
+                <svg id="r-eye-icon2" xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                  <path stroke-linecap="round" stroke-linejoin="round" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/>
+                  <path stroke-linecap="round" stroke-linejoin="round" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"/>
+                </svg>
+              </button>
+            </div>
+            <div class="field-hint" id="r-confirm-hint"></div>
+          </div>
+        </div>
+
+        <button class="btn-submit" id="r-submit" type="button" style="margin-top:20px;">
+          <span class="btn-text">Buat Akun</span>
+          <span class="btn-spinner"><span class="spinner-ring"></span></span>
+        </button>
+
+        <p class="form-footer right">
+          <button class="accent-link" id="go-login" type="button">Kembali Ke Login</button>
+        </p>
+      </div>
+    </div>
+
+  </div><!-- /slide-track -->
+</div><!-- /page-wrapper -->
+
+<!-- SUCCESS OVERLAY -->
+<div class="success-overlay" id="success-overlay">
+  <div class="success-icon">
+    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5">
+      <path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/>
+    </svg>
+  </div>
+  <div class="success-title" id="s-title">Berhasil Masuk!</div>
+  <div class="success-sub"   id="s-sub">Selamat datang kembali ✨</div>
+</div>
+
+<script>
+/* ── helpers ── */
+const EYE_OPEN  = `<path stroke-linecap="round" stroke-linejoin="round" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/><path stroke-linecap="round" stroke-linejoin="round" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"/>`;
+const EYE_CLOSE = `<path stroke-linecap="round" stroke-linejoin="round" d="M13.875 18.825A10.05 10.05 0 0112 19c-4.478 0-8.268-2.943-9.543-7a9.97 9.97 0 011.563-3.029m5.858.908a3 3 0 114.243 4.243M9.878 9.878l4.242 4.242M9.88 9.88l-3.29-3.29m7.532 7.532l3.29 3.29M3 3l3.59 3.59m0 0A9.953 9.953 0 0112 5c4.478 0 8.268 2.943 9.543 7a10.025 10.025 0 01-4.132 5.411m0 0L21 21"/>`;
+
+function toggleEye(input, iconEl) {
+  const vis = input.type === 'text';
+  input.type = vis ? 'password' : 'text';
+  iconEl.innerHTML = vis ? EYE_OPEN : EYE_CLOSE;
+}
+
+function set$(input, hint, ok, msg) {
+  input.classList.toggle('ok', ok);
+  input.classList.toggle('error', !ok);
+  hint.textContent = msg;
+  hint.className = `field-hint ${ok ? 'show-ok' : 'show-error'}`;
+}
+
+function clear$(input, hint) {
+  input.classList.remove('ok','error');
+  hint.className = 'field-hint';
+  hint.textContent = '';
+}
+
+function wire(input, hint, fn) {
+  input.addEventListener('input', () => {
+    input.classList.toggle('has-value', input.value.length > 0);
+    if (input.classList.contains('error') || input.classList.contains('ok')) fn();
+  });
+  input.addEventListener('blur', fn);
+}
+
+function ripple(btn, e) {
+  const r = document.createElement('span');
+  const rect = btn.getBoundingClientRect();
+  const sz = rect.width;
+  r.className = 'ripple';
+  r.style.cssText = `left:${e.clientX-rect.left}px;top:${e.clientY-rect.top}px;width:${sz}px;height:${sz}px;margin-left:-${sz/2}px;margin-top:-${sz/2}px;`;
+  btn.appendChild(r);
+  setTimeout(() => r.remove(), 600);
+}
+
+function shake(btn) {
+  let i = 0;
+  const iv = setInterval(() => {
+    btn.style.transform = `translateX(${i % 2 === 0 ? -6 : 6}px)`;
+    if (++i > 5) { clearInterval(iv); btn.style.transform=''; }
+  }, 60);
+}
+
+function showSuccess(title, sub, cb) {
+  document.getElementById('s-title').textContent = title;
+  document.getElementById('s-sub').textContent   = sub;
+  const ov = document.getElementById('success-overlay');
+  ov.classList.add('show');
+  setTimeout(() => { ov.classList.remove('show'); if(cb) cb(); }, 2600);
+}
+
+/* ── slide navigation ── */
+const track = document.getElementById('slide-track');
+document.getElementById('go-register').addEventListener('click', () => track.classList.add('show-register'));
+document.getElementById('go-login').addEventListener('click',    () => track.classList.remove('show-register'));
+
+/* ── LOGIN logic ── */
+const lEmail = document.getElementById('l-email');
+const lPass  = document.getElementById('l-pass');
+const lEH    = document.getElementById('l-email-hint');
+const lPH    = document.getElementById('l-pass-hint');
+
+const vlEmail = () => {
+  const v = lEmail.value.trim();
+  if (!v) { clear$(lEmail, lEH); return false; }
+  const ok = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(v);
+  set$(lEmail, lEH, ok, ok ? 'Email terlihat bagus!' : 'Format email tidak valid');
+  return ok;
+};
+const vlPass = () => {
+  const v = lPass.value;
+  if (!v) { clear$(lPass, lPH); return false; }
+  const ok = v.length >= 6;
+  set$(lPass, lPH, ok, ok ? 'Password oke!' : 'Minimal 6 karakter');
+  return ok;
+};
+
+wire(lEmail, lEH, vlEmail);
+wire(lPass,  lPH, vlPass);
+document.getElementById('l-eye').addEventListener('click', () => toggleEye(lPass, document.getElementById('l-eye-icon')));
+
+document.getElementById('l-submit').addEventListener('click', function(e) {
+  ripple(this, e);
+  if (!(vlEmail() & vlPass())) { shake(this); return; }
+  this.classList.add('loading');
+  setTimeout(() => { 
+    this.classList.remove('loading'); 
+    showSuccess('Berhasil Masuk!', 'Selamat datang kembali ✨', () => { window.location.href = 'index.html'; }); 
+  }, 500);
+});
+
+/* ── REGISTER logic ── */
+const rName    = document.getElementById('r-name');
+const rEmail   = document.getElementById('r-email');
+const rPass    = document.getElementById('r-pass');
+const rConfirm = document.getElementById('r-confirm');
+const rNH = document.getElementById('r-name-hint');
+const rEH = document.getElementById('r-email-hint');
+const rPH = document.getElementById('r-pass-hint');
+const rCH = document.getElementById('r-confirm-hint');
+
+const vrName = () => {
+  const v = rName.value.trim();
+  if (!v) { clear$(rName, rNH); return false; }
+  const ok = v.length >= 3;
+  set$(rName, rNH, ok, ok ? 'Nama oke!' : 'Minimal 3 karakter');
+  return ok;
+};
+const vrEmail = () => {
+  const v = rEmail.value.trim();
+  if (!v) { clear$(rEmail, rEH); return false; }
+  const ok = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(v);
+  set$(rEmail, rEH, ok, ok ? 'Email terlihat bagus!' : 'Format email tidak valid');
+  return ok;
+};
+const vrPass = () => {
+  const v = rPass.value;
+  if (!v) { clear$(rPass, rPH); return false; }
+  const ok = v.length >= 6;
+  set$(rPass, rPH, ok, ok ? 'Sandi oke!' : 'Minimal 6 karakter');
+  if (rConfirm.value) vrConfirm();
+  return ok;
+};
+const vrConfirm = () => {
+  const v = rConfirm.value;
+  if (!v) { clear$(rConfirm, rCH); return false; }
+  const ok = v === rPass.value;
+  set$(rConfirm, rCH, ok, ok ? 'Sandi cocok!' : 'Sandi tidak cocok');
+  return ok;
+};
+
+wire(rName,    rNH, vrName);
+wire(rEmail,   rEH, vrEmail);
+wire(rPass,    rPH, vrPass);
+wire(rConfirm, rCH, vrConfirm);
+document.getElementById('r-eye1').addEventListener('click', () => toggleEye(rPass,    document.getElementById('r-eye-icon1')));
+document.getElementById('r-eye2').addEventListener('click', () => toggleEye(rConfirm, document.getElementById('r-eye-icon2')));
+
+document.getElementById('r-submit').addEventListener('click', function(e) {
+  ripple(this, e);
+  if (!(vrName() & vrEmail() & vrPass() & vrConfirm())) { shake(this); return; }
+  this.classList.add('loading');
+  setTimeout(() => {
+    this.classList.remove('loading');
+    showSuccess('Akun Berhasil Dibuat!', 'Selamat bergabung dengan kami 🎉', () => {
+      window.location.href = 'index.html';
+    });
+  }, 500);
+});
+
+/* close success overlay on click */
+document.getElementById('success-overlay').addEventListener('click', function() {
+  this.classList.remove('show');
+});
+</script>
+</body>
+</html>
