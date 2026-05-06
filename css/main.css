@@ -1416,7 +1416,6 @@ button { cursor: pointer; font-family: var(--font-body); }
 
 @media (max-width: 768px) {
   .navbar { padding: 0 20px; }
-  .nav-links { display: none; }
   .menu-section { padding: 40px 20px; }
   .menu-grid { grid-template-columns: repeat(2, 1fr); gap: 14px; }
   .detail-container,
@@ -1427,6 +1426,7 @@ button { cursor: pointer; font-family: var(--font-body); }
 }
 
 @media (max-width: 480px) {
+  .nav-links { display: none; }
   .menu-grid { grid-template-columns: 1fr; }
   .hero { padding: 48px 16px 40px; }
   .hero-info { flex-direction: column; gap: 14px; }
